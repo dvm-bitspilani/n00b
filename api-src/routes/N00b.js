@@ -7,7 +7,5 @@ module.exports = function(app) {
     .delete(n00bController.kill_n00b);
 
   app.route('/external')
-    // .get(n00bController.test_webhook)
-    .post(n00bController.pull_n00b)
-    .put(n00bController.gen_webhook);
+    .post(n00bController.pull_n00b);
 };

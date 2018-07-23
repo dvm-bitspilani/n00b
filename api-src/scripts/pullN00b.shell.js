@@ -10,7 +10,7 @@ module.exports = (N00b, branch, callback = () => {}) => {
     exec(`git pull origin ${branch}`, (code, stdout, stderr) => {
       callback({
         code: code,
-        atdout: stdout,
+        stdout: stdout,
         stderr: stderr
       });
     });

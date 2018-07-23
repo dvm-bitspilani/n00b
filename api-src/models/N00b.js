@@ -1,7 +1,6 @@
 import mongoose, {Schema} from 'mongoose';
 import {genSymlink, genN00b, pullN00b, getCommitDetails, build} from '../scripts/bundle';
-import {domainMap, orgName, webhookURL} from '../../.n00brc';
-import github from '../github';
+import {domainMap} from '../../.n00brc';
 
 const domains = ['oops'];
 for (let domain in domainMap) {
@@ -44,16 +43,29 @@ const N00bSchema = new Schema({
     default: Date.now
   },
   'last_pull': {
-    'time': Date,
-    'commit': {
-      'author': String,
-      'message': String,
-      'time': String,
-      'hash': String
+    'master': {
+      'time': Date,
+      'commit': {
+        'author': String,
+        'message': String,
+        'time': String,
+        'hash': String
+      },
+      build_result: {},
+      pull_result: {}
     },
-    build_result: {}
-  },
-  'webhook_id': Number
+    'test': {
+      'time': Date,
+      'commit': {
+        'author': String,
+        'message': String,
+        'time': String,
+        'hash': String
+      },
+      build_result: {},
+      pull_result: {}
+    }
+  }
 });
 
 N00bSchema.methods.genSymlink = function() {
@@ -73,7 +85,7 @@ N00bSchema.methods.pull = function() {
   return new Promise((resolve, reject) => {
     let results = this.branches.map(branch => {
       return new Promise((_resolve, _reject) => {
-        pullN00b(this, branch, () => {
+        pullN00b(this, branch, pull_result => {
           // TODO: For some reason, multiple gCDs don't work.
           // Get that working...
           const details = getCommitDetails(this, '%an^^^%B^^^%cr^^^%H');
@@ -85,7 +97,8 @@ N00bSchema.methods.pull = function() {
               message: detailsArray[1],
               time: detailsArray[2],
               hash: detailsArray[3]
-            }
+            },
+            pull_result: pull_result
           };
           if(this.scripts.build) {
             build(result => {
@@ -105,44 +118,6 @@ N00bSchema.methods.pull = function() {
       });
     });
     Promise.all(results).then(resolve).catch(reject);
-  });
-};
-
-N00bSchema.methods.genWebhook = function(webhook_id) {
-  return new Promise((resolve, reject) => {
-    let newHook;
-    if(webhook_id) {
-      newHook = github.repos.editHook({
-        owner: orgName,
-        repo: this.repository,
-        hook_id: webhook_id,
-        config: {
-          url: webhookURL,
-          content_type: 'json'
-        },
-        events: ['push']
-      });
-    } else {
-      newHook = github.repos.createHook({
-        owner: orgName,
-        repo: this.repository,
-        name: 'web',
-        config: {
-          url: webhookURL,
-          content_type: 'json'
-        },
-        events: ['push']
-      });
-    }
-    newHook.then(response => {
-      this.webhook_id = response.data.id;
-      this.save(err => {
-        if(err) reject(err);
-        else resolve();
-      });
-    }).catch(err => {
-      reject(err);
-    });
   });
 };
 
