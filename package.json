@@ -1,0 +1,29 @@
+{
+  "name": "n00b",
+  "version": "1.0.0",
+  "description": "DVM N00B Portal - Easy host websites",
+  "main": "backend/index.js",
+  "author": "Chinmay Pandhare",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn babel api-src --out-dir api",
+    "api": "yarn nodemon api/index.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^15.9.4",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.4",
+    "nodemon": "^1.18.3",
+    "shelljs": "^0.8.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^5.1.0",
+    "eslint-plugin-react": "^7.10.0",
+    "flow-bin": "^0.76.0"
+  }
+}

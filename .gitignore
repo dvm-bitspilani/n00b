@@ -1,0 +1,10 @@
+.n00brc.json
+n00bs/*
+test_n00bs/*
+oops/*
+node_modules
+api
+yarn-error.log
+nodemon.json
+apogee
+apogee-test
