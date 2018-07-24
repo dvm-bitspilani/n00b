@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn babel api-src --out-dir api",
-    "api": "yarn nodemon api/index.js"
+    "api": "yarn nodemon api/index.js",
+    "test": "yarn eslint api-src; yarn build"
   },
   "dependencies": {
     "@octokit/rest": "^15.9.4",
