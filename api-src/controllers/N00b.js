@@ -101,7 +101,7 @@ const create_new_n00b = (req, res) => {
 
 const kill_n00b = (req, res) => {
   if(req.body._id) {
-    N00b.removeOne({_id: req.body._id}, (err, n00b) => {
+    N00b.remove({_id: req.body._id}, (err, n00b) => {
       if(err || !n00b) {
         res.json({
           okay: false,

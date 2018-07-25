@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import xhub from 'express-x-hub';
 
-import {APISecret} from './.n00brc';
+import {APISecret} from '../.n00brc';
 
 // eslint-disable-next-line no-unused-vars
 import N00b from './models/N00b';
