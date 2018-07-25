@@ -7,5 +7,6 @@ module.exports = {
   unlinkN00b: require('./unlinkN00b.shell'),
   exists: require('./exists.shell'),
   getCommitDetails: require('./getCommitDetails.shell'),
-  build: require('./build.shell')
+  build: require('./build.shell'),
+  removeN00b: require('./removeN00b.shell')
 };

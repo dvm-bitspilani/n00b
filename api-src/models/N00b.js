@@ -1,5 +1,13 @@
 import mongoose, {Schema} from 'mongoose';
-import {genSymlink, genN00b, pullN00b, getCommitDetails, build} from '../scripts/bundle';
+import {
+  genSymlink,
+  genN00b,
+  pullN00b,
+  getCommitDetails,
+  build,
+  unlinkN00b,
+  removeN00b
+} from '../scripts/bundle';
 import {domainMap} from '../../.n00brc';
 
 const domains = ['oops'];
@@ -78,6 +86,20 @@ N00bSchema.methods.genSymlink = function() {
 N00bSchema.methods.genN00b = function() {
   this.branches.forEach(branch => {
     genN00b(this, branch);
+  });
+};
+
+N00bSchema.methods.removeN00b = function() {
+  return new Promise(resolve => {
+    let removed = this.branches.map(
+      branch => new Promise(_resolve => {
+        const linkDir = domainMap[this.domain][branch];
+        removeN00b(this, branch);
+        unlinkN00b(this, linkDir);
+        _resolve();
+      })
+    );
+    Promise.all(removed).then(resolve);
   });
 };
 

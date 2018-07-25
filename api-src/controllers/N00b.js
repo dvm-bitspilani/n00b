@@ -101,7 +101,7 @@ const create_new_n00b = (req, res) => {
 
 const kill_n00b = (req, res) => {
   if(req.body._id) {
-    N00b.remove({_id: req.body._id}, (err, n00b) => {
+    N00b.findOneAndDelete({_id: req.body._id}, (err, n00b) => {
       if(err || !n00b) {
         res.json({
           okay: false,
@@ -109,11 +109,13 @@ const kill_n00b = (req, res) => {
             ...err,
             n: n00b
           },
-          error_src: 'kill_n00b.remove'
+          error_src: 'kill_n00b.findOne'
         });
       } else {
-        res.json({
-          okay: true
+        n00b.removeN00b().then(() => {
+          res.json({
+            okay: true
+          });
         });
       }
     });
