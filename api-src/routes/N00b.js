@@ -8,4 +8,7 @@ module.exports = function(app) {
 
   app.route('/external')
     .post(n00bController.pull_n00b);
+
+  app.route('/github')
+    .post(n00bController.webhook);
 };
