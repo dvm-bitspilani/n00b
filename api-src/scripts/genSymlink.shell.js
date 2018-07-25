@@ -1,4 +1,4 @@
-import {cd, exec, echo} from 'shelljs';
+import {cd, exec} from 'shelljs';
 
 module.exports = (N00b, route, branch) => {
   let dir;
@@ -7,8 +7,6 @@ module.exports = (N00b, route, branch) => {
   const cwd = process.cwd();
   const n00bPath = `${cwd}/${dir}/${N00b.name}`;
   cd(route);
-  echo(process.cwd());
-  echo(`ln -sfv ${N00b.www_path} ${n00bPath}`);
-  exec(`ln -sfv ${N00b.www_path} ${n00bPath}`);
+  exec(`ln -sf ${n00bPath} ${N00b.www_path}`);
   cd(cwd);
 };
