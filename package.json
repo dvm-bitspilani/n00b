@@ -14,6 +14,7 @@
     "@octokit/rest": "^15.9.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "express-x-hub": "^1.0.4",
     "mongoose": "^5.2.4",
     "nodemon": "^1.18.3",
     "shelljs": "^0.8.2"

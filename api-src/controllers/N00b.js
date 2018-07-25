@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import {createHmac} from 'crypto';
-import {orgName, APISecret} from '../../.n00brc';
+import {orgName} from '../../.n00brc';
 import github from '../github';
 
 const N00b = mongoose.model('N00b');
@@ -168,46 +167,39 @@ const pull_n00b = (req, res) => {
 };
 
 const webhook = (req, res) => {
-  const signature = req.headers['X-Hub-Signature'];
-  const hmac = createHmac('sha1', APISecret);
-  const calculatedSignature =
-    'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
-  const repository = req.body.repository.name;
-  if(signature === calculatedSignature) {
-    N00b.findOne({repository: repository}, (err, n00b) => {
-      if(err || !n00b) {
-        res.json({
-          okay: false,
-          error: err,
-          error_src: 'webhook.findOne'
-        });
-      } else {
-        n00b.pull().then(() => {
-          res.json({
-            okay: true,
-            last_pull: n00b.last_pull
-          });
-        }).catch(err => {
-          res.json({
-            okay: false,
-            error: err,
-            error_src: 'webhook.pull'
-          });
-        });
-      }
-    });
-    res.json({
-      okay: true
-    });
-  } else {
+  if(!req.isXHub || !req.isXHubValid()) {
     res.json({
       okay: false,
       error: {
-        message: 'Could not verify identity'
+        message: 'Authenticity of Webhook could not be established.'
       },
-      error_src: 'webhook.insecure'
+      error_src: 'webhook.invalid'
     });
+    return;
   }
+  const repository = req.body.repository.name;
+  N00b.findOne({repository: repository}, (err, n00b) => {
+    if(err || !n00b) {
+      res.json({
+        okay: false,
+        error: err,
+        error_src: 'webhook.findOne'
+      });
+    } else {
+      n00b.pull().then(() => {
+        res.json({
+          okay: true,
+          last_pull: n00b.last_pull
+        });
+      }).catch(err => {
+        res.json({
+          okay: false,
+          error: err,
+          error_src: 'webhook.pull'
+        });
+      });
+    }
+  });
 };
 
 module.exports = {
