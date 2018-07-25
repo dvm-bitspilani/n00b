@@ -1359,6 +1359,13 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
+express-x-hub@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/express-x-hub/-/express-x-hub-1.0.4.tgz#93917da478f5c517f5b74a2700795f616a2a0d1d"
+  dependencies:
+    raw-body "^2.1.4"
+    type-is "^1.6.9"
+
 express@^4.16.3:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
@@ -2750,7 +2757,7 @@ raw-body@2.3.2:
     iconv-lite "0.4.19"
     unpipe "1.0.0"
 
-raw-body@2.3.3:
+raw-body@2.3.3, raw-body@^2.1.4:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.3.3.tgz#1b324ece6b5706e153855bc1148c65bb7f6ea0c3"
   dependencies:
@@ -3331,7 +3338,7 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-is@~1.6.15, type-is@~1.6.16:
+type-is@^1.6.9, type-is@~1.6.15, type-is@~1.6.16:
   version "1.6.16"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.16.tgz#f89ce341541c672b25ee7ae3c73dee3b2be50194"
   dependencies:
