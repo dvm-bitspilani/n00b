@@ -38,12 +38,26 @@ const N00bSchema = new Schema({
   },
   'branches': {
     type: Array,
-    default: ['master']
+    default: [
+      {
+        type: 'master',
+        name: 'master'
+      }
+    ]
   },
   'scripts': {
-    build: {
+    enabled: {
       type: Boolean,
       default: false
+    },
+    package_manager: {
+      type: String,
+      values: ['yarn','npm'],
+      default: 'yarn'
+    },
+    script: {
+      type: String,
+      default: 'build'
     }
   },
   'created_at': {
@@ -78,8 +92,8 @@ const N00bSchema = new Schema({
 
 N00bSchema.methods.genSymlink = function() {
   this.branches.forEach(branch => {
-    const linkDir = domainMap[this.domain][branch];
-    genSymlink(this, linkDir, branch);
+    const linkDir = domainMap[this.domain][branch.type];
+    genSymlink(this, branch, linkDir);
   });
 };
 
@@ -93,7 +107,7 @@ N00bSchema.methods.removeN00b = function() {
   return new Promise(resolve => {
     let removed = this.branches.map(
       branch => new Promise(_resolve => {
-        const linkDir = domainMap[this.domain][branch];
+        const linkDir = domainMap[this.domain][branch.type];
         removeN00b(this, branch);
         unlinkN00b(this, linkDir);
         _resolve();
@@ -110,9 +124,9 @@ N00bSchema.methods.pull = function() {
         pullN00b(this, branch, pull_result => {
           // TODO: For some reason, multiple gCDs don't work.
           // Get that working...
-          const details = getCommitDetails(this, '%an^^^%B^^^%cr^^^%H');
+          const details = getCommitDetails(this, branch, '%an^^^%B^^^%cr^^^%H');
           const detailsArray  = details.replace(/\n/g,'').split('^^^');
-          this.last_pull[branch] = {
+          this.last_pull[branch.type] = {
             time: Date.now(),
             commit: {
               author: detailsArray[0],
@@ -122,17 +136,23 @@ N00bSchema.methods.pull = function() {
             },
             pull_result: pull_result
           };
-          if(this.scripts.build) {
-            build(result => {
-              this.last_pull[branch].build_result = result;
+          if(this.scripts.enabled) {
+            build(this, branch, result => {
+              this.last_pull[branch.type].build_result = result;
               this.save(err => {
-                if(err) _reject(err);
+                if(err) _reject({
+                  error: err,
+                  error_src: 'pull.build'
+                });
                 else _resolve();
               });
             });
           } else {
             this.save(err => {
-              if(err) _reject(err);
+              if(err) _reject({
+                error: err,
+                error_src: 'pull.save'
+              });
               else _resolve();
             });
           }
