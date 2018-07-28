@@ -188,17 +188,9 @@ const webhook = (req, res) => {
         error_src: 'webhook.findOne'
       });
     } else {
-      n00b.pull().then(() => {
-        res.json({
-          okay: true,
-          last_pull: n00b.last_pull
-        });
-      }).catch(err => {
-        res.json({
-          okay: false,
-          error: err,
-          error_src: 'webhook.pull'
-        });
+      n00b.pull();
+      res.json({
+        okay: true
       });
     }
   });

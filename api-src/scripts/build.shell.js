@@ -1,4 +1,4 @@
-import {cd, exec, pwd} from 'shelljs';
+import {cd, exec} from 'shelljs';
 
 module.exports = (N00b, branch, callback) => {
   const cwd = process.cwd();
