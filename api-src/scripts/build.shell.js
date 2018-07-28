@@ -1,4 +1,4 @@
-import {cd, exec} from 'shelljs';
+import {cd, exec, pwd} from 'shelljs';
 
 module.exports = (N00b, branch, callback) => {
   const cwd = process.cwd();
@@ -8,6 +8,7 @@ module.exports = (N00b, branch, callback) => {
   const {package_manager, script} = N00b.scripts;
   cd(n00bPath);
   exec(`${package_manager} install`, (iCode, iStdout, iStderr) => {
+    cd(n00bPath);
     exec(`${package_manager} ${script}`, (bCode, bStdout, bStderr) => {
       callback({
         install: {
@@ -22,6 +23,7 @@ module.exports = (N00b, branch, callback) => {
         }
       });
     });
+    cd(cwd);
     if(iCode !== 0) {
       callback({
         install: {

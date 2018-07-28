@@ -204,10 +204,42 @@ const webhook = (req, res) => {
   });
 };
 
+const build_n00b = (req, res) => {
+  if(req.body._id) {
+    N00b.findOne({_id: req.body._id}, (err, n00b) => {
+      if(err || !n00b) {
+        res.json({
+          okay: false,
+          error: {
+            ...err,
+            n: n00b
+          },
+          error_src: 'build_n00b.find'
+        });
+      } else {
+        n00b.build().then(() => {
+          res.json({
+            okay: true
+          });
+        });
+      }
+    });
+  } else {
+    res.json({
+      okay: false,
+      error: {
+        message: 'No ID specified'
+      },
+      error_src: 'build_n00b.no_id'
+    });
+  }
+};
+
 module.exports = {
   list_all_n00bs: list_all_n00bs,
   create_new_n00b: create_new_n00b,
   kill_n00b: kill_n00b,
   pull_n00b: pull_n00b,
-  webhook: webhook
+  webhook: webhook,
+  build_n00b: build_n00b
 };

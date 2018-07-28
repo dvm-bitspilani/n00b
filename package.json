@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn babel api-src --out-dir api",
-    "api": "yarn nodemon api/index.js",
+    "api_restart": "yarn forever stop api/index.js; yarn forever start api/index.js -w -watchDirectory api",
     "test": "yarn eslint api-src; yarn build"
   },
   "dependencies": {
@@ -15,8 +15,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "express-x-hub": "^1.0.4",
+    "forever": "^0.15.3",
     "mongoose": "^5.2.4",
-    "nodemon": "^1.18.3",
     "shelljs": "^0.8.2"
   },
   "devDependencies": {

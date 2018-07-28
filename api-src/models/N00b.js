@@ -136,30 +136,43 @@ N00bSchema.methods.pull = function() {
             },
             pull_result: pull_result
           };
-          if(this.scripts.enabled) {
-            build(this, branch, result => {
-              this.last_pull[branch.type].build_result = result;
-              this.save(err => {
-                if(err) _reject({
-                  error: err,
-                  error_src: 'pull.build'
-                });
-                else _resolve();
-              });
-            });
-          } else {
-            this.save(err => {
-              if(err) _reject({
-                error: err,
-                error_src: 'pull.save'
-              });
-              else _resolve();
-            });
-          }
+          this.buildBranch(branch).then(_resolve).catch(_reject);
         });
       });
     });
     Promise.all(results).then(resolve).catch(reject);
+  });
+};
+
+N00bSchema.methods.buildBranch = function(branch) {
+  return new Promise((resolve, reject) => {
+    if(this.scripts.enabled) {
+      build(this, branch, result => {
+        this.last_pull[branch.type].build_result = result;
+        this.save(err => {
+          if(err) reject({
+            error: err,
+            error_src: 'build.build'
+          });
+          else resolve();
+        });
+      });
+    } else {
+      this.save(err => {
+        if(err) reject({
+          error: err,
+          error_src: 'build.save'
+        });
+        else resolve();
+      });
+    }
+  });
+};
+
+N00bSchema.methods.build = function() {
+  return new Promise((resolve, reject) => {
+    const builds = this.branches.map(branch => this.buildBranch(branch));
+    Promise.all(builds).then(resolve).catch(reject);
   });
 };
 
