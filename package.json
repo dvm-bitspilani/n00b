@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn babel api-src --out-dir api",
-    "api_restart": "yarn forever stop api/index.js; yarn forever start api/index.js -w -watchDirectory api",
+    "api_restart": "forever stop api/index.js; forever start api/index.js -w -watchDirectory api",
     "test": "yarn eslint api-src; yarn build"
   },
   "dependencies": {
