@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.get('/n00b/ghlogin', gh.login);
 
 app.all('*', (req, res, next) => {
-  if (!req.github || !req.github.authenticated)
+  if (req.originalUrl !== '/n00b/github/' (!req.github || !req.github.authenticated))
     return res.redirect('/n00b/ghlogin');
   next();
 });
