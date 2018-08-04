@@ -14,25 +14,25 @@ const list_all_n00bs = (req, res) => {
     });
     n00bs = n00bs.map(async _n00b => {
       let commit, commitData;
-      try {
-        commit = await github.repos.getCommits({
-          owner: orgName,
-          repo: _n00b.repository,
-          per_page: 1
-        });
-        commitData = {
-          okay: true,
-          author: commit.data[0].commit.author.name,
-          message: commit.data[0].commit.message,
-          time: commit.data[0].commit.author.date,
-          hash: commit.data[0].sha,
-        };
-      } catch(err) {
-        commitData = {
-          okay: false,
-          err: err,
-        };
-      }
+      // try {
+      //   commit = await github.repos.getCommits({
+      //     owner: orgName,
+      //     repo: _n00b.repository,
+      //     per_page: 1
+      //   });
+      //   commitData = {
+      //     okay: true,
+      //     author: commit.data[0].commit.author.name,
+      //     message: commit.data[0].commit.message,
+      //     time: commit.data[0].commit.author.date,
+      //     hash: commit.data[0].sha,
+      //   };
+      // } catch(err) {
+      //   commitData = {
+      //     okay: false,
+      //     err: err,
+      //   };
+      // }
 
       return {
         n00b: _n00b,

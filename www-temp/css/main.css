@@ -1,0 +1,34 @@
+.portal {
+  max-width: 1000px;
+  height: 100vh;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  text-align: center;
+}
+.n00bs {
+  flex: 1;
+}
+.n00b {
+  display: flex;
+  align-items: stretch;
+}
+.n00b > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.domain {
+  text-align: center;
+  min-width: 20px;
+  width: 10%;
+}
+.domain__name {
+  font-size: 2rem;
+}
+.path {
+  flex: 1;
+}
