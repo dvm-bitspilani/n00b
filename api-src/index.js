@@ -28,11 +28,11 @@ app.use(gh.authenticate);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/ghlogin', gh.login);
+app.get('/n00b/ghlogin', gh.login);
 
 app.all('*', (req, res, next) => {
   if (!req.github || !req.github.authenticated)
-    return res.redirect('/ghlogin');
+    return res.redirect('/n00b/ghlogin');
   next();
 });
 

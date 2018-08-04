@@ -11,7 +11,7 @@ export default class N00bs extends Component {
     };
   }
   componentDidMount() {
-    fetch('/core/')
+    fetch('/n00b/core')
       .then(response => response.json())
       .then(data => {
         if(data.okay) {
